@@ -12,6 +12,8 @@
     "build:types": "tsc --emitDeclarationOnly"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.161",
+    "lodash": "^4.17.20",
     "typescript-ioc": "^3.2.2"
   },
   "devDependencies": {

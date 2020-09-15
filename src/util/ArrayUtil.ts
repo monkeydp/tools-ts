@@ -7,7 +7,19 @@ export default class ArrayUtil {
         return map
     }
 
-    static containsById<K, V>(arr: Array<V>, getId: (v: V) => K, value: K): boolean {
+    static firstOrNull<T>(arr: Array<T>, predicate: (t: T) => boolean): T | null {
+        arr.forEach(it => {
+            if (predicate(it))
+                return it
+        })
+        return null
+    }
+
+    static has<T>(arr: Array<T>, predicate: (t: T) => boolean): boolean {
+        return this.firstOrNull(arr, predicate) != null
+    }
+
+    static hasById<K, V>(arr: Array<V>, getId: (v: V) => K, value: K): boolean {
         const map = this.groupById(arr, getId)
         return map.has(value)
     }
