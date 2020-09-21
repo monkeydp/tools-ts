@@ -1,3 +1,5 @@
+import ierror from "../error/InnerError";
+
 export default class ArrayUtil {
     static groupById<K, V>(arr: Array<V>, getId: (v: V) => K): Map<K, V> {
         const map = new Map<K, V>();
@@ -7,12 +9,42 @@ export default class ArrayUtil {
         return map
     }
 
+    static first<T>(arr: Array<T>, predicate: (t: T) => boolean): T {
+        const item = this.firstOrNull(arr, predicate)
+        if (item == null)
+            ierror("First item not found in array " + JSON.stringify(arr))
+        return item
+    }
+
     static firstOrNull<T>(arr: Array<T>, predicate: (t: T) => boolean): T | null {
         arr.forEach(it => {
             if (predicate(it))
                 return it
         })
         return null
+    }
+
+    static single<T>(arr: Array<T>, predicate: (t: T) => boolean): T {
+        const item = this.singleOrNull(arr, predicate)
+        if (item == null)
+            ierror(`Single item not found in array ${JSON.stringify(arr)}`)
+        return item
+    }
+
+    static singleOrNull<T>(arr: Array<T>, predicate: (t: T) => boolean): T | null {
+        const matched = new Array<T>()
+        arr.forEach(it => {
+            if (predicate(it))
+                matched.push(it)
+        })
+        switch (matched.length) {
+            case 0:
+                return null
+            case 1:
+                return matched[0]
+            default:
+                ierror(`Expect single item in array, but found ${matched.length} items. Array: ${JSON.stringify(arr)}, matched: ${JSON.stringify(matched)}`)
+        }
     }
 
     static has<T>(arr: Array<T>, predicate: (t: T) => boolean): boolean {
