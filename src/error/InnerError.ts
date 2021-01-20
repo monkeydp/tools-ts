@@ -1,9 +1,9 @@
 /**
  * 内部异常
  */
-export type InnerError = Error & {
-    errorType: string;
-}
+import Errorable from "./Errorable";
+
+export type InnerError = Error & Errorable
 
 export class BaseInnerError implements InnerError {
     readonly message: string;
